@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="width: 100%;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Anand Library</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -80,15 +80,16 @@
         </form>
         
     </div>
-    <div id="table" style="margin: auto; width: 60%;">
+    <div id="table" style="margin: auto; width: 60%; overflow: scroll;">
         <h1>Your Books</h1>
-        <table class="table table-striped">
+        <table class="table table-striped" style=>
             <thead>
                 <tr>
                     
                     <th scope="col">Name</th>
                     <th scope="col">Author</th>
                     <th scope="col">Type</th>
+                    <th scope="col">Delete Option</th>
                 </tr>
             </thead>
             <tbody id="tableBody">

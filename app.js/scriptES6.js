@@ -1,4 +1,5 @@
 // This is same as script.js but instead of prototypes here we used ES6 classes
+
 class Book {
     constructor(name, author, type) {
         this.name = name;
@@ -7,15 +8,70 @@ class Book {
     }
 }
 class Display {
-    add(book) {
+    add() {
         let tableBody = document.getElementById('tableBody');
-        let html = `<tr>
-                           <td>${book.name}</td>
-                           <td>${book.author}</td>
-                           <td>${book.type}</td>
-                     </tr>`;
+        let notes = localStorage.getItem('notes');
+        let notesObj;
+        if (notes == null) {
+            notesObj = [];
+        }
+        else {
+            notesObj = JSON.parse(notes);
+        }
+        let html = '';
+        /*notesObj.forEach(function (element, idx) {
+            html += `<tr>
+            <td>${element.name}</td>
+            <td>${element.author}</td>
+            <td>${element.type}</td>
+            <td><button type="submit" class="btn btn-primary">Delete</button></td>
+      </tr>`;
+        });*/
+        let element = notesObj[notesObj.length - 1];
+        html += `<tr>
+            <td>${element.name}</td>
+            <td>${element.author}</td>
+            <td>${element.type}</td>
+            <td><button type="submit" class="btn btn-primary">Delete</button></td>
+      </tr>`;
+
         tableBody.innerHTML += html;
 
+    }
+    showPrevious(){
+        let tableBody = document.getElementById('tableBody');
+        let notes = localStorage.getItem('notes');
+        let notesObj;
+        if (notes == null) {
+            notesObj = [];
+        }
+        else {
+            notesObj = JSON.parse(notes);
+        }
+        let html = '';
+        notesObj.forEach(function (element, idx) {
+            html += `<tr>
+            <td>${element.name}</td>
+            <td>${element.author}</td>
+            <td>${element.type}</td>
+            <td><button type="submit" class="btn btn-primary">Delete</button></td>
+      </tr>`;
+        });
+        tableBody.innerHTML += html;
+    }
+    updateBook(book) {
+        let notes = localStorage.getItem('notes');
+        let notesObj;
+        if (notes == null) {
+            notesObj = [];
+        }
+        else {
+            notesObj = JSON.parse(notes);
+        }
+        notesObj.push(book);
+        console.log(notesObj);
+        localStorage.setItem('notes', JSON.stringify(notesObj));
+        // preventDefault();
     }
     clear() {
         let libraryForm = document.getElementById('libraryForm');
@@ -32,12 +88,10 @@ class Display {
     show(type, msg) {
         let message = document.getElementById('message');
         let boldText;
-        if(type == 'success')
-        {
-               boldText = 'Success';
+        if (type == 'success') {
+            boldText = 'Success';
         }
-        else
-        {
+        else {
             boldText = 'Error!';
         }
         message.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
@@ -49,6 +103,10 @@ class Display {
         }, 2000);
     }
 }
+
+// Showing before adding all the books which are already added
+let display = new Display();
+display.showPrevious();
 // Add submit event Listener to libraryForm
 let libraryForm = document.getElementById('libraryForm');
 libraryForm.addEventListener('submit', libraryFormSubmit)
@@ -75,7 +133,8 @@ function libraryFormSubmit(e) {
 
     let display = new Display();
     if (display.validate(book)) {
-        display.add(book);
+        display.updateBook(book);
+        display.add();
         display.clear();
         display.show('success', 'Your book has been successfully added');
     }
